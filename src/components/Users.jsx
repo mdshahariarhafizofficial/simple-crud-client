@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { use, useState } from 'react';
 
-const Users = () => {
+const Users = ({fetchUsers}) => {
+    const loadUsers = use(fetchUsers);
+    const [users, setUsers] = useState(loadUsers);
+    
     const handleAddUser = (e) =>{
         e.preventDefault();
         
@@ -19,8 +22,28 @@ const Users = () => {
         .then(res => res.json())
         .then(data => {
             console.log("Data After Adding Db", data);
+            if (data.insertedId) {
+                newUser._id = data.insertedId;
+                setUsers([...users, newUser])
+                alert('User Added on Db')
+                e.target.reset();
+            }
         })
-        e.target.reset();
+
+    };
+    const handleDeleteUser = (id) => {
+        console.log("Delete User id", id);
+        fetch(`http://localhost:3000/users/${id}`, {
+            method: "DELETE"
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.deletedCount) {     
+                console.log("Deleted user", data);
+                const remainingUsers = users.filter( user => user._id !== id);
+                setUsers(remainingUsers)
+            }
+        })
     }
 
     return (
@@ -30,6 +53,16 @@ const Users = () => {
                 <input type="email" name='email' placeholder='Email' /><br /><br />
                 <input type="submit" value="Submit" />
             </form>
+
+            <div>
+                <h2>Total Users : {users.length}</h2>
+                {
+                    users.map(user => <p key={user._id} >
+                        {user.name} : {user.email} 
+                        <button onClick={()=> handleDeleteUser(user._id)}>X</button>
+                    </p> )
+                }
+            </div>
         </div>
     );
 };
