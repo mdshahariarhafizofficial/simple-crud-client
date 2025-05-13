@@ -1,4 +1,5 @@
 import React, { use, useState } from 'react';
+import { Link } from 'react-router';
 
 const Users = ({fetchUsers}) => {
     const loadUsers = use(fetchUsers);
@@ -58,7 +59,8 @@ const Users = ({fetchUsers}) => {
                 <h2>Total Users : {users.length}</h2>
                 {
                     users.map(user => <p key={user._id} >
-                        {user.name} : {user.email} 
+                        {user.name} : {user.email}
+                        <Link to={`user-details/${user._id}`}>Details</Link> 
                         <button onClick={()=> handleDeleteUser(user._id)}>X</button>
                     </p> )
                 }
