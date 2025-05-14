@@ -59,7 +59,8 @@ const Users = ({fetchUsers}) => {
                 <h2>Total Users : {users.length}</h2>
                 {
                     users.map(user => <p key={user._id} >
-                        {user.name} : {user.email}
+                        <Link to={`edit-user-details/${user._id}`}>Edit</Link> &bsp  
+                        { user.name} : {user.email}
                         <Link to={`user-details/${user._id}`}>Details</Link> 
                         <button onClick={()=> handleDeleteUser(user._id)}>X</button>
                     </p> )

@@ -8,6 +8,7 @@ import {
 } from "react-router";
 import Root from './components/Layouts/Root.jsx';
 import UserDetails from './components/UserDetails.jsx';
+import EditUser from './components/EditUser.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,12 @@ const router = createBrowserRouter([
       {
         path: 'user-details/:id',
         Component: UserDetails,
+        loader: ({params}) => fetch(`http://localhost:3000/users/${params.id}`),
+        hydrateFallbackElement: <p>Loading...</p> 
+      },
+      {
+        path: "edit-user-details/:id",
+        Component: EditUser,
         loader: ({params}) => fetch(`http://localhost:3000/users/${params.id}`),
         hydrateFallbackElement: <p>Loading...</p> 
       }
